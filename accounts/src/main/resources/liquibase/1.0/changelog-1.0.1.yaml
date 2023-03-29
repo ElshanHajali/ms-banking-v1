@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create customers table
+      author: Elshan Hacaliyev
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: true
+              - column:
+                  name: email
+                  type: varchar
+                  constraints:
+                    nullable: true
+              - column:
+                  name: mobile_number
+                  type: varchar
+                  constraints:
+                    nullable: true
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+
+            remarks: Table to store accounts information
+            schemaName: public

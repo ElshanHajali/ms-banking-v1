@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create accounts table
+      author: Elshan Hacaliyev
+      changes:
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: number
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar
+                  constraints:
+                    nullable: true
+              - column:
+                  name: branch_address
+                  type: varchar
+                  constraints:
+                    nullable: true
+              - column:
+                  name: customer_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+
+            remarks: Table to store accounts information
+            schemaName: public

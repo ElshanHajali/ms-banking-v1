@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - changeSet:
+      id: empty-changeset
+      author: Elshan Hacaliyev

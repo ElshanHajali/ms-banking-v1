@@ -1,23 +1,51 @@
+version: '3.9'
+
 services:
-  postgres-accounts:
+  accounts-db:
     image: postgres
-    container_name: postgres-accounts
-    mem_limit: 200 M
     volumes:
-      - 'data:/var/lib/postgresql/data'
-    networks:
-      - 'backend'
+      - accounts_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=accounts
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: accounts
+    networks:
+      - backend
+    mem_limit: 200 M
     ports:
       - "5434:5432"
+  loans-db:
+    image: postgres
+    volumes:
+      - loans_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: loans
+    networks:
+      - backend
+    mem_limit: 200 M
+    ports:
+      - "5535:5432"
 
-volumes:
-  data:
-    name: accounts-data
+  cards-db:
+    image: postgres
+    volumes:
+      - cards_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: cards
+    networks:
+      - backend
+    mem_limit: 200 M
+    ports:
+      - "5636:5432"
 
 networks:
   backend:
-    name: bank-backend
+
+volumes:
+  accounts_data:
+  loans_data:
+  cards_data:

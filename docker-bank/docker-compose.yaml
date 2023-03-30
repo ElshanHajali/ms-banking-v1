@@ -42,6 +42,60 @@ services:
     ports:
       - "5636:5432"
 
+  accounts:
+    image: worldoflegion/accounts:0.0.1
+    mem_limit: 700m
+    hostname: accounts-hostname
+    container_name: accounts_container
+    build:
+      dockerfile: accounts/Dockerfile
+    ports:
+      - "9000:8080"
+    networks:
+      - backend
+    depends_on:
+      - accounts-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://accounts-db:5432/accounts
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user
+
+  loans:
+    image: worldoflegion/loans:0.0.1
+    mem_limit: 700m
+    hostname: loans-hostname
+    container_name: loans_container
+    build:
+      dockerfile: loans/Dockerfile
+    ports:
+      - "9001:8181"
+    networks:
+      - backend
+    depends_on:
+      - loans-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://loans-db:5432/loans
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user
+
+  cards:
+    image: worldoflegion/cards:0.0.1
+    mem_limit: 700m
+    hostname: cards-hostname
+    container_name: cards_container
+    build:
+      dockerfile: cards/Dockerfile
+    ports:
+      - "9002:8282"
+    networks:
+      - backend
+    depends_on:
+      - cards-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://cards-db:5432/cards
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user
+
 networks:
   backend:
 

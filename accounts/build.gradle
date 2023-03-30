@@ -14,6 +14,19 @@ configurations {
     }
 }
 
+jar {
+    manifest {
+        attributes "Main-Class":
+                "az.company.demo.PerformingTasksApplication(Main app reference)"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 repositories {
     mavenCentral()
 }

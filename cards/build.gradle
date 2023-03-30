@@ -18,6 +18,20 @@ repositories {
     mavenCentral()
 }
 
+
+jar {
+    manifest {
+        attributes "Main-Class":
+                "az.company.demo.PerformingTasksApplication(Main app reference)"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 dependencies {
     // actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

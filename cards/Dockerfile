@@ -1,9 +1,11 @@
-FROM openjdk:17-slim as build
+FROM alpine:latest
 
-COPY build/libs/cards-0.0.1.jar /app/
+RUN apk add --no-cache openjdk17
+
+COPY /build/libs/cards-0.0.1.jar /app/
 
 WORKDIR /app/
 
 ENTRYPOINT ["java"]
 
-CMD ["-jar", "cards-0.0.1.jar"]
+CMD ["-jar", "/app/cards-0.0.1.jar"]

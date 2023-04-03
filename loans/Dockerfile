@@ -2,10 +2,8 @@ FROM alpine:latest
 
 RUN apk add --no-cache openjdk17
 
-COPY build/libs/loans-0.0.1.jar /app/
+ENV JAR_DIR loans-0.0.1.jar
 
-WORKDIR /app/
+COPY $JAR_DIR /app/
 
-ENTRYPOINT ["java"]
-
-CMD ["-jar", "loans-0.0.1.jar"]
+CMD java -jar /app/$JAR_DIR

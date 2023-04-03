@@ -2,10 +2,8 @@ FROM alpine:latest
 
 RUN apk add --no-cache openjdk17
 
-COPY /build/libs/cards-0.0.1.jar /app/
+ENV JAR_DIR cards-0.0.1.jar
 
-WORKDIR /app/
+COPY $JAR_DIR /app/
 
-ENTRYPOINT ["java"]
-
-CMD ["-jar", "/app/cards-0.0.1.jar"]
+CMD java -jar /app/$JAR_DIR

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.palantir.docker' version '0.22.1'
 }
 
 group = 'com.example'
@@ -13,13 +14,15 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2022.0.2")
+    set('springCloudVersion', "2021.0.6")
 }
 
 dependencies {
+    // Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Cloud Config
     implementation 'org.springframework.cloud:spring-cloud-config-server'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 dependencyManagement {
@@ -28,6 +31,11 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+// Automating docker image building under project dir
+// </> ./gradlew docker --- builds image
+// </> ./gradlew dockerPush --- pushes to the remote repository
+docker {
+    dependsOn bootJar
+    name "worldoflegion/${project.name}:${project.version}"
+    files bootJar.archivePath, processResources
 }

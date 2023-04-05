@@ -16,8 +16,6 @@ spring:
       ddl-auto: none
   liquibase:
     change-log: classpath:liquibase/changelog-master.yaml
-  activemq:
-    broker-url:
 #  To connect to the Config Server
   application:
     name: accounts

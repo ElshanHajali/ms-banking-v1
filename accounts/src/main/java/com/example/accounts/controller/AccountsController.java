@@ -2,10 +2,10 @@ package com.example.accounts.controller;
 
 import com.example.accounts.config.AccountsCloudConfigs;
 import com.example.accounts.dto.response.AccountsResponse;
+import com.example.accounts.dto.response.PropertyResponse;
 import com.example.accounts.service.AccountsService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +23,11 @@ public class AccountsController {
     }
 
     @GetMapping("properties")
-    public AccountsCloudConfigs getPropertiesDetails() {
-        return accountsCloudConfigs;
+    public PropertyResponse getPropertiesDetails() {
+        return PropertyResponse.builder()
+                .mailDetails(accountsCloudConfigs.getMailDetails())
+                .activeBranches(accountsCloudConfigs.getActiveBranches())
+                .buildVersion(accountsCloudConfigs.getBuildVersion())
+                .msg(accountsCloudConfigs.getMsg()).build();
     }
 }

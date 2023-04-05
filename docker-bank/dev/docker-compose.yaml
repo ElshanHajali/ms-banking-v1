@@ -1,0 +1,145 @@
+version: '3.9'
+
+services:
+  accounts-db:
+    image: postgres
+    volumes:
+      - accounts_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: accounts
+    networks:
+      - backend
+    mem_limit: 200 M
+    ports:
+      - "5434:5432"
+  loans-db:
+    image: postgres
+    volumes:
+      - loans_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: loans
+    networks:
+      - backend
+    mem_limit: 200 M
+    ports:
+      - "5535:5432"
+
+  cards-db:
+    image: postgres
+    volumes:
+      - cards_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: cards
+    networks:
+      - backend
+    mem_limit: 200 M
+    ports:
+      - "5636:5432"
+
+  accounts:
+    image: worldoflegion/accounts:0.0.1
+    mem_limit: 700m
+    hostname: accounts-hostname
+    container_name: accounts_container
+    build:
+      dockerfile: accounts/Dockerfile
+    ports:
+      - "9000:8080"
+    networks:
+      - backend
+    depends_on:
+      - bank-config-server
+      - accounts-db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://accounts-db:5432/accounts
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+
+
+  loans:
+    image: worldoflegion/loans:0.0.1
+    mem_limit: 700m
+    hostname: loans-hostname
+    container_name: loans_container
+    build:
+      dockerfile: loans/Dockerfile
+    ports:
+      - "9001:8181"
+    networks:
+      - backend
+    depends_on:
+      - bank-config-server
+      - loans-db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://loans-db:5432/loans
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+
+  cards:
+    image: worldoflegion/cards:0.0.1
+    mem_limit: 700m
+    hostname: cards-hostname
+    container_name: cards_container
+    build:
+      dockerfile: cards/Dockerfile
+    ports:
+      - "9002:8282"
+    networks:
+      - backend
+    depends_on:
+      - bank-config-server
+      - cards-db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cards-db:5432/cards
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+
+  bank-config-server:
+    image: worldoflegion/bank-config-server:0.0.1
+    mem_limit: 700m
+    hostname: config-server-hostname
+    container_name: config_server_container
+    build:
+      dockerfile: bank-config-server/Dockerfile
+    ports:
+      - "9099:9099"
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  accounts_data:
+  loans_data:
+  cards_data:

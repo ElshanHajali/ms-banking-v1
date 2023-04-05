@@ -1,6 +1,8 @@
 package com.example.loans.controller;
 
+import com.example.loans.config.LoansCloudConfigs;
 import com.example.loans.dto.LoansResponse;
+import com.example.loans.dto.PropertyResponse;
 import com.example.loans.service.LoansService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoansController {
     private final LoansService loansService;
+    private final LoansCloudConfigs loansCloudConfigs;
 
     @GetMapping("customers/{customerId}")
     public List<LoansResponse> getLoansByCustomerId(@PathVariable Long customerId) {
         return loansService.getLoansByCustomerId(customerId);
+    }
+
+    @GetMapping("properties")
+    public PropertyResponse getPropertiesDetails() {
+        return PropertyResponse.builder()
+                .mailDetails(loansCloudConfigs.getMailDetails())
+                .activeBranches(loansCloudConfigs.getActiveBranches())
+                .buildVersion(loansCloudConfigs.getBuildVersion())
+                .msg(loansCloudConfigs.getMsg()).build();
     }
 }

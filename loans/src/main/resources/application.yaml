@@ -16,5 +16,12 @@ spring:
       ddl-auto: none
   liquibase:
     change-log: classpath:liquibase/changelog-master.yaml
+  #  To connect to the Config Server
+  application:
+    name: loans
+  profiles:
+    active: prod
+  config:
+    import: optional:configserver:http://localhost:9099/
 server:
   port: 8181

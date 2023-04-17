@@ -57,15 +57,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // Cloud Config
-    implementation 'org.springframework.cloud:spring-cloud-starter-config'
-
-    // Configuration Processor
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-    // Eureka Client
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
     // Open Feign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }

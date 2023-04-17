@@ -17,12 +17,31 @@ ext {
     set('springCloudVersion', "2021.0.6")
 }
 
+jar {
+    manifest {
+        attributes "Main-Class":
+                "az.company.demo.PerformingTasksApplication(Main app reference)"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 dependencies {
     // Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     // Cloud Config
     implementation 'org.springframework.cloud:spring-cloud-config-server'
+
+    // Eureka Client
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // Open Feign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
 
 dependencyManagement {

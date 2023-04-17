@@ -56,6 +56,7 @@ services:
     depends_on:
       - bank-config-server
       - accounts-db
+      - bank-service-discovery
     deploy:
       restart_policy:
         condition: on-failure
@@ -64,11 +65,11 @@ services:
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: default
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://bank-service-discovery:8070/eureka/
       SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
       SPRING_DATASOURCE_URL: jdbc:postgresql://accounts-db:5432/accounts
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: user
-
 
   loans:
     image: worldoflegion/loans:0.0.1
@@ -92,6 +93,7 @@ services:
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: default
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://bank-service-discovery:8070/eureka/
       SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
       SPRING_DATASOURCE_URL: jdbc:postgresql://loans-db:5432/loans
       SPRING_DATASOURCE_USERNAME: user
@@ -119,6 +121,7 @@ services:
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: default
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://bank-service-discovery:8070/eureka/
       SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
       SPRING_DATASOURCE_URL: jdbc:postgresql://cards-db:5432/cards
       SPRING_DATASOURCE_USERNAME: user
@@ -135,6 +138,29 @@ services:
       - "9099:9099"
     networks:
       - backend
+
+  bank-service-discovery:
+    image: worldoflegion/bank-service-discovery:0.0.1
+    mem_limit: 700m
+    hostname: service-discovery-hostname
+    container_name: service_discovery_container
+    build:
+      dockerfile: bank-service-discovery/Dockerfile
+    ports:
+      - "8070:8070"
+    networks:
+      - backend
+    depends_on:
+      - bank-config-server
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://bank-config-server:9099/
 
 networks:
   backend:

@@ -56,6 +56,12 @@ dependencies {
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Micrometer
+    implementation 'io.micrometer:micrometer-core:1.10.5'
+
+    // Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.5'
 }
 
 dependencyManagement {

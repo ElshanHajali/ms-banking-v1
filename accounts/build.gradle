@@ -59,6 +59,15 @@ dependencies {
 
     // Open Feign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    // Micrometer
+    implementation 'io.micrometer:micrometer-core:1.10.5'
+
+    // Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.5'
+
+    // Spring AOP
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 dependencyManagement {

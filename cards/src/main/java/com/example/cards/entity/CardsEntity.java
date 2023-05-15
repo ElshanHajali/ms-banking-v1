@@ -2,6 +2,7 @@ package com.example.cards.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -28,7 +29,9 @@ public class CardsEntity {
     private BigDecimal amountUsed;
     private BigDecimal availableAmount;
 
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 }

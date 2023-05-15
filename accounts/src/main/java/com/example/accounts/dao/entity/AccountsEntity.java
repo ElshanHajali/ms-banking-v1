@@ -19,7 +19,7 @@ public class AccountsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long number;
+    private Long id;
     private String type;
     private String branchAddress;
 
